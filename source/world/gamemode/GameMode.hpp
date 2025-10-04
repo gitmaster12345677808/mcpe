@@ -13,6 +13,7 @@
 #include "world/entity/LocalPlayer.hpp"
 
 class Minecraft;
+class CraftingGrid;
 
 class GameMode
 {
@@ -46,6 +47,9 @@ public:
 	virtual bool isCreativeType() const { return true; }
 	virtual bool isSurvivalType() const { return false; }
 	virtual float getDestroyModifier() const { return 1.0; }
+	
+	// Crafting support
+	virtual bool handleCrafting(Player* player, CraftingGrid& grid);
 
 public:
 	Minecraft* m_pMinecraft;

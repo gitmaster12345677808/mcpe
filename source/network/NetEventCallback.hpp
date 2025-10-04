@@ -27,6 +27,7 @@ class RequestChunkPacket;
 class ChunkDataPacket;
 class PlayerEquipmentPacket;
 class LevelDataPacket;
+class CraftingPacket;
 #include "world/level/Level.hpp"
 class Level;
 class LevelChunk;
@@ -57,5 +58,6 @@ public:
 	virtual void handle(const RakNet::RakNetGUID&, ChunkDataPacket*);
 	virtual void handle(const RakNet::RakNetGUID&, PlayerEquipmentPacket*);
 	virtual void handle(const RakNet::RakNetGUID&, LevelDataPacket*);
+	virtual void handle(const RakNet::RakNetGUID&, CraftingPacket*);
 };
 

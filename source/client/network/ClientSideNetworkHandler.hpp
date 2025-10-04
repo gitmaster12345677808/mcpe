@@ -45,6 +45,7 @@ public:
 	void handle(const RakNet::RakNetGUID&, ChunkDataPacket*) override;
 	void handle(const RakNet::RakNetGUID&, PlayerEquipmentPacket*) override;
 	void handle(const RakNet::RakNetGUID&, LevelDataPacket*) override;
+	void handle(const RakNet::RakNetGUID&, CraftingPacket*);
 	
 	bool areAllChunksLoaded();
 	void arrangeRequestChunkOrder();

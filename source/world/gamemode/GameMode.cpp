@@ -8,6 +8,7 @@
 
 #include "GameMode.hpp"
 #include "client/app/Minecraft.hpp"
+#include "world/crafting/CraftingGrid.hpp"
 
 GameMode::GameMode(Minecraft* pMinecraft, Level& level) :
 	m_pMinecraft(pMinecraft),
@@ -154,5 +155,10 @@ bool GameMode::useItemOn(Player* player, Level* level, ItemInstance* instance, c
 		return instance->useOn(player, level, pos, face);
 
 	return false;
+}
+
+bool GameMode::handleCrafting(Player* player, CraftingGrid& grid)
+{
+	return player->m_pInventory->craft(grid);
 }
 

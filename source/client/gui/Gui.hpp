@@ -46,6 +46,7 @@ public:
 	void tick();
 	void renderSlot(int slot, int x, int y, float f);
 	void renderSlotOverlay(int slot, int x, int y, float f);
+	void renderDurabilityBar(int x, int y, int width, int height, float r, float g, float b);
 	int  getSlotIdAt(int mx, int my);
 	bool isInside(int mx, int my);
 	void handleClick(int id, int mx, int my);

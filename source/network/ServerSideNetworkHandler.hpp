@@ -54,6 +54,7 @@ public:
 	void handle(const RakNet::RakNetGUID&, RemoveBlockPacket*) override;
 	void handle(const RakNet::RakNetGUID&, PlayerEquipmentPacket*) override;
 	void handle(const RakNet::RakNetGUID&, RequestChunkPacket*) override;
+	void handle(const RakNet::RakNetGUID&, CraftingPacket*);
 
 	// Overridden from LevelListener
 	void tileBrightnessChanged(const TilePos& pos) override;
@@ -80,6 +81,7 @@ public:
 	void commandGamemode (OnlinePlayer*, const std::vector<std::string>&);
 	void commandGive     (OnlinePlayer*, const std::vector<std::string>&);
 	void commandClear    (OnlinePlayer*, const std::vector<std::string>&);
+	void commandCraft    (OnlinePlayer*, const std::vector<std::string>&);
 
 public:
 	Minecraft* m_pMinecraft;

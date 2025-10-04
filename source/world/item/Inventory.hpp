@@ -8,6 +8,7 @@
 
 class Entity;
 class Player; // in case we're included from Player.hpp
+class CraftingGrid;
 
 #define C_MAX_HOTBAR_ITEMS (9)
 #define C_NUM_SURVIVAL_SLOTS (36)
@@ -33,6 +34,7 @@ public:
     void tick();
 
 	ItemInstance* getItem(int slotNo);
+	void setItem(int slotNo, ItemInstance* item);
 	ItemInstance* getQuickSlotItem(int slotNo);
 	ItemInstance* getSelectedItem();
 	int getQuickSlotItemId(int slotNo);
@@ -55,6 +57,11 @@ public:
 
 	// v0.2.0 name alias
 	ItemInstance* getSelected() { return getSelectedItem(); }
+
+	// Crafting support
+	bool craft(CraftingGrid& grid);
+	void openCraftingTable();
+	void closeCraftingTable();
 	
 private:
 	GameType _getGameMode() const;
@@ -66,4 +73,5 @@ private:
 
 	int m_hotbar[C_MAX_HOTBAR_ITEMS];
 	std::vector<ItemInstance*> m_items;
+	bool m_bCraftingTableOpen;
 };

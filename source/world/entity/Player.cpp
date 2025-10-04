@@ -9,11 +9,13 @@
 #include "Player.hpp"
 #include "world/level/Level.hpp"
 #include "nbt/CompoundTag.hpp"
+#include "world/crafting/CraftingInterface.hpp"
 
 Player::Player(Level* pLevel, GameType playerGameType) : Mob(pLevel)
 {
 	m_pDescriptor = &EntityTypeDescriptor::player;
 	m_pInventory = nullptr;
+	m_pCraftingInterface = nullptr;
 	field_B94 = 0;
 	m_score = 0;
     m_oBob = 0.0f;
@@ -28,6 +30,7 @@ Player::Player(Level* pLevel, GameType playerGameType) : Mob(pLevel)
 	setPlayerGameType(playerGameType);
 
 	m_pInventory = new Inventory(this);
+	m_pCraftingInterface = new CraftingInterface(this);
 
 	setDefaultHeadHeight();
 
@@ -47,6 +50,7 @@ Player::Player(Level* pLevel, GameType playerGameType) : Mob(pLevel)
 Player::~Player()
 {
 	delete m_pInventory;
+	delete m_pCraftingInterface;
 }
 
 void Player::reset()

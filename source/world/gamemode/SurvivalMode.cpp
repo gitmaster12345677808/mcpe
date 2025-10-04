@@ -6,7 +6,9 @@
 	SPDX-License-Identifier: BSD-1-Clause
  ********************************************************************/
 
-#include "SurvivalMode.hpp"
+#include "world/gamemode/SurvivalMode.hpp"
+#include "world/item/Item.hpp"
+#include "common/Utils.hpp"
 #include "client/app/Minecraft.hpp"
 
 SurvivalMode::SurvivalMode(Minecraft* pMC, Level& level) : GameMode(pMC, level),
@@ -65,8 +67,11 @@ bool SurvivalMode::destroyBlock(Player* player, const TilePos& pos, Facing::Name
 
 	//@HUH: check too late?
 	bool bCanDestroy = m_pMinecraft->m_pLocalPlayer->canDestroy(Tile::tiles[tile]);
+	
+	// Check if the player has the appropriate tool to harvest this block
+	bool bCanHarvest = canHarvestBlock(m_pMinecraft->m_pLocalPlayer, tile);
 
-	if (bCanDestroy)
+	if (bCanDestroy && bCanHarvest)
 	{
 		Tile::tiles[tile]->playerDestroy(&_level, m_pMinecraft->m_pLocalPlayer, pos, data);
 
@@ -148,5 +153,75 @@ void SurvivalMode::render(float f)
 		float x = m_lastDestroyProgress + (m_destroyProgress - m_lastDestroyProgress) * f;
 		m_pMinecraft->m_gui.field_8 = x;
 		m_pMinecraft->m_pLevelRenderer->field_10 = x;
+	}
+}
+
+bool SurvivalMode::canHarvestBlock(Player* player, TileID tileId) const
+{
+	// Get the player's current held item
+	ItemInstance* heldItem = player->m_pInventory->getSelectedItem();
+	int heldItemId = heldItem ? heldItem->m_itemID : -1;
+	
+	// Blocks that require specific tools to drop items
+	switch (tileId) {
+		// Stone-type blocks require a pickaxe
+		case TILE_STONE:
+		case TILE_STONEBRICK:
+		case TILE_ORE_COAL:
+		case TILE_ORE_IRON:
+		case TILE_ORE_GOLD:
+		case TILE_ORE_EMERALD:
+		case TILE_BLOCK_IRON:
+		case TILE_BLOCK_GOLD:
+		case TILE_BLOCK_EMERALD:
+		case TILE_OBSIDIAN:
+		case TILE_BRICKS:
+		case TILE_FURNACE:
+		case TILE_FURNACE_LIT:
+			return (heldItemId == ITEM_PICKAXE_WOOD ||
+			        heldItemId == ITEM_PICKAXE_STONE ||
+			        heldItemId == ITEM_PICKAXE_IRON ||
+			        heldItemId == ITEM_PICKAXE_GOLD ||
+			        heldItemId == ITEM_PICKAXE_EMERALD);
+		
+		// Wood-type blocks require an axe (but can be broken by hand slowly)
+		case TILE_TREE_TRUNK:
+		case TILE_WOOD:
+		case TILE_CHEST:
+		case TILE_WORKBENCH:
+		case TILE_BOOKSHELF:
+			// Allow hand breaking for wood blocks (just slower)
+			return true;
+		
+		// Dirt/grass-type blocks require a shovel (but can be broken by hand)
+		case TILE_DIRT:
+		case TILE_GRASS:
+		case TILE_SAND:
+		case TILE_GRAVEL:
+		case TILE_CLAY:
+			// Allow hand breaking for dirt blocks
+			return true;
+		
+		// Blocks that can always be broken by hand
+		case TILE_LEAVES:
+		case TILE_SAPLING:
+		case TILE_FLOWER:
+		case TILE_ROSE:
+		case TILE_MUSHROOM_1:
+		case TILE_MUSHROOM_2:
+		case TILE_TORCH:
+		case TILE_LADDER:
+		case TILE_SIGN:
+		case TILE_DOOR_WOOD:
+		case TILE_GLASS:
+		case TILE_TALLGRASS:
+		case TILE_DEAD_BUSH:
+		case TILE_WHEAT:
+		case TILE_REEDS:
+		case TILE_CACTUS:
+		case TILE_TNT:
+		case TILE_SPONGE:
+		default:
+			return true;
 	}
 }

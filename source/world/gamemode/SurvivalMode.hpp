@@ -28,6 +28,9 @@ public:
 	void initPlayer(Player*) override;
 	bool canHurtPlayer() override;
 	float getDestroyModifier() const override { return 1.0; }
+	
+private:
+	bool canHarvestBlock(Player* player, TileID tileId) const;
 
 public:
 	TilePos m_destroyingPos;

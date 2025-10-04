@@ -64,6 +64,12 @@ Item* Item::setMaxStackSize(int mss)
 	return this;
 }
 
+Item* Item::setMaxDamage(int damage)
+{
+	m_maxDamage = damage;
+	return this;
+}
+
 Item* Item::setCraftingRemainingItem(Item* pItem)
 {
 	if (m_maxStackSize > 1)
@@ -105,126 +111,151 @@ void Item::initItems()
 	Item::sword_wood = NEW_ITEM(ITEM_SWORD_WOOD)
 		->setIcon(0, 4)
 		->setDescriptionId("swordWood")
+		->setMaxDamage(Tier::WOOD.m_Durability)
 		->handEquipped();
 
 	Item::pickAxe_wood = NEW_ITEM(ITEM_PICKAXE_WOOD)
 		->setIcon(0, 6)
 		->setDescriptionId("pickaxeWood")
+		->setMaxDamage(Tier::WOOD.m_Durability)
 		->handEquipped();
 
 	Item::hatchet_wood = NEW_ITEM(ITEM_HATCHET_WOOD)
 		->setIcon(0, 7)
 		->setDescriptionId("hatchetWood")
+		->setMaxDamage(Tier::WOOD.m_Durability)
 		->handEquipped();
 
 	Item::shovel_wood = NEW_ITEM(ITEM_SHOVEL_WOOD)
 		->setIcon(0, 5)
 		->setDescriptionId("shovelWood")
+		->setMaxDamage(Tier::WOOD.m_Durability)
 		->handEquipped();
 
 	Item::hoe_wood = NEW_ITEM(ITEM_HOE_WOOD)
 		->setIcon(0, 8)
 		->setDescriptionId("hoeWood")
+		->setMaxDamage(Tier::WOOD.m_Durability)
 		->handEquipped();
 
 	Item::sword_stone = NEW_ITEM(ITEM_SWORD_STONE)
 		->setIcon(1, 4)
 		->setDescriptionId("swordStone")
+		->setMaxDamage(Tier::STONE.m_Durability)
 		->handEquipped();
 
 	Item::pickAxe_stone = NEW_ITEM(ITEM_PICKAXE_STONE)
 		->setIcon(1, 6)
 		->setDescriptionId("pickaxeStone")
+		->setMaxDamage(Tier::STONE.m_Durability)
 		->handEquipped();
 
 	Item::hatchet_stone = NEW_ITEM(ITEM_HATCHET_STONE)
 		->setIcon(1, 7)
 		->setDescriptionId("hatchetStone")
+		->setMaxDamage(Tier::STONE.m_Durability)
 		->handEquipped();
 
 	Item::shovel_stone = NEW_ITEM(ITEM_SHOVEL_STONE)
 		->setIcon(1, 5)
 		->setDescriptionId("shovelStone")
+		->setMaxDamage(Tier::STONE.m_Durability)
 		->handEquipped();
 
 	Item::hoe_stone = NEW_ITEM(ITEM_HOE_STONE)
 		->setIcon(1, 8)
 		->setDescriptionId("hoeStone")
+		->setMaxDamage(Tier::STONE.m_Durability)
 		->handEquipped();
 
 	Item::sword_iron = NEW_ITEM(ITEM_SWORD_IRON)
 		->setIcon(2, 4)
 		->setDescriptionId("swordIron")
+		->setMaxDamage(Tier::IRON.m_Durability)
 		->handEquipped();
 
 	Item::pickAxe_iron = NEW_ITEM(ITEM_PICKAXE_IRON)
 		->setIcon(2, 6)
 		->setDescriptionId("pickaxeIron")
+		->setMaxDamage(Tier::IRON.m_Durability)
 		->handEquipped();
 
 	Item::hatchet_iron = NEW_ITEM(ITEM_HATCHET_IRON)
 		->setIcon(2, 7)
 		->setDescriptionId("hatchetIron")
+		->setMaxDamage(Tier::IRON.m_Durability)
 		->handEquipped();
 
 	Item::shovel_iron= NEW_ITEM(ITEM_SHOVEL_IRON)
 		->setIcon(2, 5)
 		->setDescriptionId("shovelIron")
+		->setMaxDamage(Tier::IRON.m_Durability)
 		->handEquipped();
 
 	Item::hoe_iron= NEW_ITEM(ITEM_HOE_IRON)
 		->setIcon(2, 8)
 		->setDescriptionId("hoeIron")
+		->setMaxDamage(Tier::IRON.m_Durability)
 		->handEquipped();
 
 	Item::sword_gold = NEW_ITEM(ITEM_SWORD_GOLD)
 		->setIcon(4, 4)
 		->setDescriptionId("swordGold")
+		->setMaxDamage(Tier::GOLD.m_Durability)
 		->handEquipped();
 
 	Item::pickAxe_gold = NEW_ITEM(ITEM_PICKAXE_GOLD)
 		->setIcon(4, 6)
 		->setDescriptionId("pickaxeGold")
+		->setMaxDamage(Tier::GOLD.m_Durability)
 		->handEquipped();
 
 	Item::hatchet_gold = NEW_ITEM(ITEM_HATCHET_GOLD)
 		->setIcon(4, 7)
 		->setDescriptionId("hatchetGold")
+		->setMaxDamage(Tier::GOLD.m_Durability)
 		->handEquipped();
 
 	Item::shovel_gold = NEW_ITEM(ITEM_SHOVEL_GOLD)
 		->setIcon(4, 5)
 		->setDescriptionId("shovelGold")
+		->setMaxDamage(Tier::GOLD.m_Durability)
 		->handEquipped();
 
 	Item::hoe_gold = NEW_ITEM(ITEM_HOE_GOLD)
 		->setIcon(4, 8)
 		->setDescriptionId("hoeGold")
+		->setMaxDamage(Tier::GOLD.m_Durability)
 		->handEquipped();
 
 	Item::sword_emerald = NEW_ITEM(ITEM_SWORD_EMERALD)
 		->setIcon(3, 4)
 		->setDescriptionId("swordEmerald")
+		->setMaxDamage(Tier::EMERALD.m_Durability)
 		->handEquipped();
 
 	Item::pickAxe_emerald = NEW_ITEM(ITEM_PICKAXE_EMERALD)
 		->setIcon(3, 6)
 		->setDescriptionId("pickaxeEmerald")
+		->setMaxDamage(Tier::EMERALD.m_Durability)
 		->handEquipped();
 
 	Item::hatchet_emerald = NEW_ITEM(ITEM_HATCHET_EMERALD)
 		->setIcon(3, 7)
 		->setDescriptionId("hatchetEmerald")
+		->setMaxDamage(Tier::EMERALD.m_Durability)
 		->handEquipped();
 
 	Item::shovel_emerald = NEW_ITEM(ITEM_SHOVEL_EMERALD)
 		->setIcon(3, 5)
 		->setDescriptionId("shovelEmerald")
+		->setMaxDamage(Tier::EMERALD.m_Durability)
 		->handEquipped();
 
 	Item::hoe_emerald = NEW_ITEM(ITEM_HOE_EMERALD)
 		->setIcon(3, 8)
 		->setDescriptionId("hoeEmerald")
+		->setMaxDamage(Tier::EMERALD.m_Durability)
 		->handEquipped();
 
 	Item::helmet_cloth = NEW_ITEM(ITEM_HELMET_CLOTH)

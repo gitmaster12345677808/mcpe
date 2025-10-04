@@ -81,6 +81,7 @@ add_library(reminecraftpe-core STATIC
     client/gui/screens/DeleteWorldScreen.cpp
     client/gui/screens/DeathScreen.cpp
     client/gui/screens/ChatScreen.cpp
+    client/gui/screens/CraftingScreen.cpp
     client/gui/screens/RenameMPLevelScreen.cpp
     client/gui/screens/ProgressScreen.cpp
     client/gui/screens/JoinGameScreen.cpp
@@ -170,6 +171,7 @@ add_library(reminecraftpe-core STATIC
     network/packets/RemoveBlockPacket.cpp
     network/packets/MovePlayerPacket.cpp
     network/packets/MessagePacket.cpp
+    network/packets/CraftingPacket.cpp
     network/ServerSideNetworkHandler.cpp
     network/RakIO.cpp
     network/RakNetInstance.cpp
@@ -198,6 +200,10 @@ add_library(reminecraftpe-core STATIC
     world/entity/FallingTile.cpp
     world/entity/TripodCamera.cpp
     world/entity/ItemEntity.cpp
+    world/crafting/CraftingManager.cpp
+    world/crafting/CraftingGrid.cpp
+    world/crafting/CraftingInterface.cpp
+    world/crafting/RecipeInitializer.cpp
     world/entity/PathfinderMob.cpp
     world/entity/Animal.cpp
     world/entity/Skeleton.cpp

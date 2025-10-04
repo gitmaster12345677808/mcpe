@@ -8,8 +8,10 @@
 
 #include "client/app/Minecraft.hpp"
 #include "client/gui/screens/IngameBlockSelectionScreen.hpp"
+#include "client/gui/screens/CraftingScreen.hpp"
 #include "client/gui/screens/ChatScreen.hpp"
 #include "client/renderer/entity/ItemRenderer.hpp"
+#include "client/renderer/Tesselator.hpp"
 
 #ifdef _WIN32
 #pragma warning(disable : 4244)
@@ -452,7 +454,44 @@ void Gui::renderSlotOverlay(int slot, int x, int y, float f)
 	if (ItemInstance::isNull(pInst))
 		return;
 
+	// Render item count overlay
 	ItemRenderer::renderGuiItemOverlay(m_pMinecraft->m_pFont, m_pMinecraft->m_pTextures, pInst, x, y);
+	
+	// Render durability bar if item is damageable
+	if (pInst->isDamageableItem()) {
+		int maxDamage = pInst->getMaxDamage();
+		int damage = pInst->getDamageValue();
+		
+		if (damage > 0) {
+			// Calculate durability percentage (0.0 = broken, 1.0 = full durability)
+			float durabilityRatio = 1.0f - ((float)damage / (float)maxDamage);
+			
+			// Durability bar background (dark)
+			renderDurabilityBar(x + 2, y + 13, 13, 2, 0.0f, 0.0f, 0.0f);
+			
+			// Calculate bar width based on durability
+			int barWidth = (int)(11.0f * durabilityRatio);
+			if (barWidth > 11) barWidth = 11;
+			if (barWidth < 0) barWidth = 0;
+			
+			// Choose color based on durability level
+			float r, g, b;
+			if (durabilityRatio > 0.5f) {
+				// Green to yellow transition
+				r = 2.0f * (1.0f - durabilityRatio);
+				g = 1.0f;
+				b = 0.0f;
+			} else {
+				// Yellow to red transition  
+				r = 1.0f;
+				g = 2.0f * durabilityRatio;
+				b = 0.0f;
+			}
+			
+			// Render the durability bar with calculated color
+			renderDurabilityBar(x + 3, y + 13, barWidth, 1, r, g, b);
+		}
+	}
 }
 
 int Gui::getSlotIdAt(int mouseX, int mouseY)
@@ -525,6 +564,13 @@ void Gui::handleKeyPressed(int keyCode)
 	if (options->isKey(KM_INVENTORY, keyCode))
 	{
 		m_pMinecraft->setScreen(new IngameBlockSelectionScreen);
+		return;
+	}
+
+	if (options->isKey(KM_CRAFT, keyCode))
+	{
+		printf("Crafting key detected! Opening crafting screen...\n");
+		m_pMinecraft->setScreen(new CraftingScreen(m_pMinecraft->m_pLocalPlayer));
 		return;
 	}
 
@@ -629,4 +675,29 @@ RectangleArea Gui::getRectangleArea(bool b)
 		Minecraft::height - 24.0f / InvGuiScale,
 		centerX + hotbarWidthHalf,
 		Minecraft::height);
+}
+
+void Gui::renderDurabilityBar(int x, int y, int width, int height, float r, float g, float b)
+{
+	// Disable texture rendering to draw solid color
+	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	// Set the color
+	glColor4f(r, g, b, 1.0f);
+	
+	// Draw the rectangle
+	Tesselator& t = Tesselator::instance;
+	t.begin();
+	t.vertex(x,         y + height, 0.0f);
+	t.vertex(x + width, y + height, 0.0f);
+	t.vertex(x + width, y,          0.0f);
+	t.vertex(x,         y,          0.0f);
+	t.draw();
+	
+	// Restore previous state
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glDisable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
 }

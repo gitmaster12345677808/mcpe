@@ -11,6 +11,7 @@
 #include "common/Utils.hpp"
 #include "client/gui/screens/StartMenuScreen.hpp"
 #include "client/gui/screens/DisconnectionScreen.hpp"
+#include "network/packets/CraftingPacket.hpp"
 
 // This lets you make the client shut up and not log events in the debug console.
 //#define VERBOSE_CLIENT
@@ -541,4 +542,26 @@ void ClientSideNetworkHandler::flushAllBufferedUpdates()
 		SBufferedBlockUpdate& u = m_bufferedBlockUpdates[i];
 		m_pLevel->setTileAndData(u.pos, u.tile, u.data);
 	}
+}
+
+void ClientSideNetworkHandler::handle(const RakNet::RakNetGUID& rakGuid, CraftingPacket* packet)
+{
+	puts_ignorable("CraftingPacket");
+
+	if (!m_pLevel) return;
+
+	// Find the player who performed the crafting
+	Entity* entity = m_pLevel->getEntity(packet->playerId);
+	if (!entity || !entity->isPlayer()) return;
+
+	Player* player = (Player*)entity;
+	
+	// Update the player's inventory based on the crafting action
+	// This would be the result of a validated crafting operation from the server
+	if (packet->resultItemId > 0 && packet->resultCount > 0) {
+		ItemInstance resultItem(packet->resultItemId, packet->resultCount, 0);
+		player->m_pInventory->addItem(resultItem);
+	}
+
+	m_pMinecraft->m_gui.addMessage("Crafting completed");
 }

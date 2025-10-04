@@ -1,11 +1,14 @@
 #include "Inventory.hpp"
 #include "Item.hpp"
 #include "nbt/CompoundTag.hpp"
+#include "world/crafting/CraftingManager.hpp"
+#include "world/crafting/CraftingGrid.hpp"
 
 Inventory::Inventory(Player* pPlayer)
 {
 	m_pPlayer = pPlayer;
 	m_selectedHotbarSlot = 0;
+	m_bCraftingTableOpen = false;
 
 	for (int i = 0; i < C_MAX_HOTBAR_ITEMS; i++)
 		m_hotbar[i] = -1;
@@ -126,6 +129,12 @@ void Inventory::prepareSurvivalInventory()
 	addTestItem(Tile::ladder->m_ID, 64);
 	addTestItem(Tile::obsidian->m_ID, 64);
 	addTestItem(Tile::fire->m_ID, 64);
+	
+	// Add tools with different damage levels to test durability bars
+	addTestItem(Item::pickAxe_wood->m_itemID, 1, 10);    // Slightly damaged wood pickaxe
+	addTestItem(Item::pickAxe_stone->m_itemID, 1, 50);   // Half damaged stone pickaxe  
+	addTestItem(Item::pickAxe_iron->m_itemID, 1, 200);   // Heavily damaged iron pickaxe
+	addTestItem(Item::sword_emerald->m_itemID, 1, 1500); // Almost broken diamond sword
 
 	for (int i = 0; i < C_MAX_HOTBAR_ITEMS; i++)
 		m_hotbar[i] = i;
@@ -276,6 +285,14 @@ ItemInstance* Inventory::getItem(int slotNo)
 		item->m_itemID = 0;
 
 	return item;
+}
+
+void Inventory::setItem(int slotNo, ItemInstance* item)
+{
+	if (slotNo < 0 || slotNo >= int(m_items.size()))
+		return;
+
+	m_items[slotNo] = item;
 }
 
 int Inventory::getQuickSlotItemId(int slotNo)
@@ -473,4 +490,41 @@ void Inventory::load(const ListTag& tag)
 GameType Inventory::_getGameMode() const
 {
 	return m_pPlayer->getPlayerGameType();
+}
+
+bool Inventory::craft(CraftingGrid& grid)
+{
+	// Find a matching recipe
+	const CraftingRecipe* recipe = CraftingManager::getInstance().match(grid.getGrid());
+	if (!recipe) return false;
+
+	// Check if we have inventory space for the result
+	ItemInstance resultItem(recipe->resultItemId, recipe->resultCount, 0);
+	if (!addItem(resultItem)) return false;
+
+	// Consume input items
+	for (int y = 0; y < grid.getHeight(); ++y) {
+		for (int x = 0; x < grid.getWidth(); ++x) {
+			ItemInstance* item = grid.getItem(x, y);
+			if (item && item->m_count > 0) {
+				item->m_count--;
+				if (item->m_count <= 0) {
+					delete item;
+					grid.setItem(x, y, nullptr);
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+void Inventory::openCraftingTable()
+{
+	m_bCraftingTableOpen = true;
+}
+
+void Inventory::closeCraftingTable()
+{
+	m_bCraftingTableOpen = false;
 }

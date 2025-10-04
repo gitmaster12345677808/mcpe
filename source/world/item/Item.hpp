@@ -55,6 +55,7 @@ public: // Methods
 
 	virtual Item* setIcon(int icon);
 	virtual Item* setMaxStackSize(int mss);
+	virtual Item* setMaxDamage(int damage);
 	virtual Item* setIcon(int ix, int iy);
 	virtual int getIcon(const ItemInstance*) const;
 	virtual bool useOn(ItemInstance*, Level*, const TilePos& pos, Facing::Name face);

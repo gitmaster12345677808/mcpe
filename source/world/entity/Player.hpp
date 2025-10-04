@@ -16,6 +16,7 @@
 #include "world/gamemode/GameType.hpp"
 
 class Inventory; // in case we're included from Inventory.hpp
+class CraftingInterface;
 
 class Player : public Mob
 {
@@ -85,6 +86,7 @@ public:
 public:
 	//TODO
 	Inventory* m_pInventory;
+	CraftingInterface* m_pCraftingInterface;
 	uint8_t field_B94;
 	int m_score;
 	float m_oBob; // field_B9C

@@ -9,6 +9,9 @@
 #include "ServerSideNetworkHandler.hpp"
 #include "common/Utils.hpp"
 #include "world/entity/MobFactory.hpp"
+#include "world/crafting/CraftingManager.hpp"
+#include "world/crafting/CraftingGrid.hpp"
+#include "network/packets/CraftingPacket.hpp"
 
 // This lets you make the server shut up and not log events in the debug console.
 //#define VERBOSE_SERVER
@@ -450,6 +453,7 @@ void ServerSideNetworkHandler::setupCommands()
 	m_commands["gamemode"] = &ServerSideNetworkHandler::commandGamemode;
 	m_commands["give"]     = &ServerSideNetworkHandler::commandGive;
 	m_commands["clear"]    = &ServerSideNetworkHandler::commandClear;
+	m_commands["craft"]    = &ServerSideNetworkHandler::commandCraft;
 }
 
 bool ServerSideNetworkHandler::_checkPermissions(OnlinePlayer* player)
@@ -787,4 +791,106 @@ void ServerSideNetworkHandler::commandClear(OnlinePlayer* player, const std::vec
 
 	sendMessage(player, "Your inventory has been cleared.");
 	return;
+}
+
+void ServerSideNetworkHandler::handle(const RakNet::RakNetGUID& guid, CraftingPacket* packet)
+{
+	puts_ignorable("CraftingPacket");
+
+	OnlinePlayer* pOP = getPlayerByGUID(guid);
+	if (!pOP)
+	{
+		LOG_W("CraftingPacket: That player %s doesn't exist", guid.ToString());
+		return;
+	}
+
+	// Validate the crafting attempt on the server
+	CraftingGrid grid(packet->grid.empty() ? 0 : packet->grid[0].size(), packet->grid.size());
+	for (int y = 0; y < packet->grid.size(); ++y) {
+		for (int x = 0; x < packet->grid[y].size(); ++x) {
+			int itemId = packet->grid[y][x];
+			if (itemId > 0) {
+				// Find item in player's inventory
+				for (int i = 0; i < pOP->m_pPlayer->m_pInventory->getNumItems(); ++i) {
+					ItemInstance* item = pOP->m_pPlayer->m_pInventory->getItem(i);
+					if (item && item->m_itemID == itemId && item->m_count > 0) {
+						grid.setItem(x, y, item);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	// Validate the recipe matches what the client claims
+	const CraftingRecipe* recipe = CraftingManager::getInstance().match(grid.getGrid());
+	if (!recipe || recipe->resultItemId != packet->resultItemId || recipe->resultCount != packet->resultCount) {
+		sendMessage(pOP, "Invalid crafting attempt");
+		return;
+	}
+
+	// Perform the crafting
+	if (m_pMinecraft->m_pGameMode->handleCrafting(pOP->m_pPlayer, grid)) {
+		sendMessage(pOP, "Crafting successful");
+		// Redistribute crafting packet to other clients for inventory sync
+		redistributePacket(packet, guid);
+	} else {
+		sendMessage(pOP, "Crafting failed");
+	}
+}
+
+void ServerSideNetworkHandler::commandCraft(OnlinePlayer* player, const std::vector<std::string>& parms)
+{
+	if (!m_pLevel)
+		return;
+		
+	if (!_checkPermissions(player)) return;
+
+	if (parms.size() < 1) {
+		sendMessage(player, "Usage: /craft <recipe_type>");
+		sendMessage(player, "Available recipes: stick, plank, ladder");
+		return;
+	}
+
+	Player* pPlayer = player->m_pPlayer;
+	CraftingGrid grid(3, 3);
+
+	if (parms[0] == "stick") {
+		// Create a 2x1 wooden plank pattern for sticks
+		ItemInstance* plank1 = new ItemInstance(5, 1, 0); // Wood plank
+		ItemInstance* plank2 = new ItemInstance(5, 1, 0); // Wood plank
+		grid.setItem(1, 0, plank1);
+		grid.setItem(1, 1, plank2);
+	} else if (parms[0] == "plank") {
+		// Create a single log pattern for planks
+		ItemInstance* log = new ItemInstance(17, 1, 0); // Tree trunk
+		grid.setItem(1, 1, log);
+	} else if (parms[0] == "ladder") {
+		// Create stick H pattern for ladder
+		ItemInstance* stick1 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick2 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick3 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick4 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick5 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick6 = new ItemInstance(280, 1, 0);
+		ItemInstance* stick7 = new ItemInstance(280, 1, 0);
+		
+		grid.setItem(0, 0, stick1);
+		grid.setItem(2, 0, stick2);
+		grid.setItem(0, 1, stick3);
+		grid.setItem(1, 1, stick4);
+		grid.setItem(2, 1, stick5);
+		grid.setItem(0, 2, stick6);
+		grid.setItem(2, 2, stick7);
+	} else {
+		sendMessage(player, "Unknown recipe type: " + parms[0]);
+		return;
+	}
+
+	// Test the crafting
+	if (m_pMinecraft->m_pGameMode->handleCrafting(pPlayer, grid)) {
+		sendMessage(player, "Crafting successful! Check your inventory.");
+	} else {
+		sendMessage(player, "Crafting failed. Check recipe or inventory space.");
+	}
 }
