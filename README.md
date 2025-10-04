@@ -1,33 +1,12 @@
-# ReMinecraftPE
+# ReMinecraftPE Erik edition
 
 This project aims to provide a customizable, cross-platform, legacy Minecraft experience.
 The code is based on a decompilation of Minecraft: Pocket Edition (v0.1.3) as of 2011, which itself is a port of Minecraft: Java Edition (Beta 1.3-1.7.3).
 
 **Its goals are:**
-* To add features from Minecraft Beta 1.7.3 and below.
-* To add togglable edition-specific aesthetic features.
-  Some examples include:
-  * Legacy Console Edition gamma and mipmaps
-  * Pocket Edition sky colors
-  * Normal lighting (something Pocket Edition lacked)
-  * Alpha title logo
-* To (in the future) provide a cross-platform modding API in a language like [Luau](https://luau.org/), giving more creative control to the community.
-* To keep the source code layout similar to the original Minecraft PE (reconstructed from clues hidden within
-  certain versions of the game, such as the 0.1.0 touch prototype/debug build)
-* To add support for as many platforms as possible, such as the Xbox 360, PlayStation 3, Wii, and more.
-  Currently, the following platforms are supported:
-	* Windows (2000 and above; thanks to [iProgramInCpp](https://github.com/iProgramMC))
-	* Android (thanks to [Stom](https://github.com/Stommm) for the help)
-	* Linux
-	* WebGL
-	* macOS (10.4 and above; thanks to [BrentDaMage](https://github.com/BrentDaMage))
-	* iOS (3.0 and above; thanks to [BrentDaMage](https://github.com/BrentDaMage))
-	* HaikuOS (thanks to [SanyaSho](https://github.com/SanyaSho))
-
+* to bring back 2011 pocket edition
+* sorry remcpe i forked to bring this version back to life
 **We will not do the following:**
-* Add features added in or after Java Edition Beta 1.8
-* Change the default aesthetic the game is shipped with. We're currently targeting Java Edition Beta 1.7.3.
-  Players can use the options menu to change the game's aesthetic to match the version/edition of their liking.
 * Add Herobrine
 * Add support for Minecraft Java or Minecraft Bedrock servers. (although LAN play with original MCPE clients
   will be supported for as long as possible)
