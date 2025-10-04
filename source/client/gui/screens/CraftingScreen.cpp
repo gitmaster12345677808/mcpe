@@ -36,30 +36,6 @@ void CraftingScreen::init()
 {
 	m_buttons.clear();
 	
-	// For testing: give player some basic items if inventory is empty
-	Inventory* inv = m_pPlayer->m_pInventory;
-	bool hasItems = false;
-	for (int i = 0; i < inv->getNumItems(); i++) {
-		ItemInstance* item = inv->getItem(i);
-		if (item && item->m_count > 0) {
-			hasItems = true;
-			break;
-		}
-	}
-	
-	if (!hasItems) {
-		printf("Giving player test items for crafting...\n");
-		// Give some basic materials for testing
-		ItemInstance woodLog(TILE_TREE_TRUNK, 10, 0);
-		ItemInstance stone(TILE_STONEBRICK, 20, 0);
-		ItemInstance iron(ITEM_INGOT_IRON, 5, 0);
-		ItemInstance coal(ITEM_COAL, 8, 0);
-		
-		inv->addItem(woodLog);
-		inv->addItem(stone);
-		inv->addItem(iron);
-		inv->addItem(coal);
-	}
 	
 	m_btnDone = new Button(1, m_width / 2 - 50, m_height - 30, 100, 20, "Done");
 	m_buttons.push_back(m_btnDone);
