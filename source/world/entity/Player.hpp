@@ -14,6 +14,7 @@
 #include "world/entity/Mob.hpp"
 #include "world/entity/ItemEntity.hpp"
 #include "world/gamemode/GameType.hpp"
+#include "../../ToolConfig.hpp"
 
 class Inventory; // in case we're included from Inventory.hpp
 class CraftingInterface;
@@ -58,6 +59,7 @@ public:
 	void displayClientMessage(const std::string& msg);
 	void drop();
 	float getDestroySpeed() const { return 1.0f; }
+	float getDestroySpeed(int blockId) const;
 	int getInventorySlot(int x) const;
 	TilePos getRespawnPosition() const { return m_respawnPos; }
 	int getScore() const { return m_score; }

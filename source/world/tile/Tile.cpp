@@ -1047,7 +1047,9 @@ float Tile::getDestroyProgress(Player* player) const
 	if (!player->canDestroy(this))
 		return 1.0f / m_hardness / 100.0f;
 
-	return player->getDestroySpeed() / m_hardness / 30.0f;
+	// Use the new tool-aware destroy speed system
+	float destroySpeed = player->getDestroySpeed(m_ID);
+	return destroySpeed / m_hardness / 30.0f;
 }
 
 void Tile::spawnResources(Level* pLevel, const TilePos& pos, TileData data)

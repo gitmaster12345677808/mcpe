@@ -425,3 +425,15 @@ ItemInstance* Player::getSelectedItem() const
 {
 	return m_pInventory->getSelected();
 }
+
+float Player::getDestroySpeed(int blockId) const
+{
+	// Get the currently held item
+	ItemInstance* heldItem = m_pInventory->getSelectedItem();
+	int heldItemId = heldItem ? heldItem->m_itemID : -1;
+	
+	// Use the tool configuration system to get the efficiency multiplier
+	float efficiency = ToolConfig::getToolEfficiency(heldItemId, blockId);
+	
+	return efficiency;
+}

@@ -567,12 +567,7 @@ void Gui::handleKeyPressed(int keyCode)
 		return;
 	}
 
-	if (options->isKey(KM_CRAFT, keyCode))
-	{
-		printf("Crafting key detected! Opening crafting screen...\n");
-		m_pMinecraft->setScreen(new CraftingScreen(m_pMinecraft->m_pLocalPlayer));
-		return;
-	}
+	// Note: C key crafting removed - now handled by button in inventory screen
 
 	bool slotL = options->isKey(KM_SLOT_L, keyCode);
 	bool slotR = options->isKey(KM_SLOT_R, keyCode);

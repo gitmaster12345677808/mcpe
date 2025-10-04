@@ -11,6 +11,7 @@
 #include "world/entity/MobCategory.hpp"
 #include "client/player/input/Multitouch.hpp"
 #include "client/gui/screens/StartMenuScreen.hpp"
+#include "../../ToolConfig.hpp"
 
 #ifdef DEMO
 #include "world/level/storage/MemoryLevelStorageSource.hpp"
@@ -88,6 +89,7 @@ void NinecraftApp::init()
 		MobCategory::initMobCategories();
 		Tile::initTiles();
 		Item::initItems();
+		ToolConfig::initializeToolEfficiency(); // Initialize tool efficiency system
 		Biome::initBiomes();
 		//TileEntity::initTileEntities();
 	}
