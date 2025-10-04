@@ -71,7 +71,7 @@ bool FarmTile::isNearWater(Level* level, const TilePos& pos)
 		{
 			for (waterPos.z = pos.z - 4; waterPos.z <= pos.z + 4; waterPos.z++)
 			{
-				if (level->getMaterial(pos) == Material::water)
+				if (level->getMaterial(waterPos) == Material::water)
 					return true;
 			}
 		}
@@ -102,6 +102,7 @@ void FarmTile::tick(Level* level, const TilePos& pos, Random* random)
 
 	if (isNearWater(level, pos))
 	{
+		// Rapidly hydrate when near water
 		level->setData(pos, 7);
 	}
 	else
@@ -109,8 +110,14 @@ void FarmTile::tick(Level* level, const TilePos& pos, Random* random)
 		TileData data = level->getData(pos);
 
 		if (data <= 0)
+		{
+			// Revert to dirt when completely dry
 			level->setTile(pos, Tile::dirt->m_ID);
+		}
 		else
+		{
+			// Slowly lose moisture over time
 			level->setData(pos, data - 1);
+		}
 	}
 }

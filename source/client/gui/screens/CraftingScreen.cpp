@@ -460,6 +460,7 @@ std::string CraftingScreen::getItemName(int itemId)
 		case ITEM_BUCKET_WATER: return "Water Bucket";
 		case ITEM_BUCKET_LAVA: return "Lava Bucket";
 		case ITEM_BUCKET_MILK: return "Milk Bucket";
+		case ITEM_FERTILIZER: return "Fertilizer";
 		case ITEM_MINECART: return "Minecart";
 		case ITEM_BOAT: return "Boat";
 		case ITEM_COMPASS: return "Compass";

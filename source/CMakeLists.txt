@@ -83,6 +83,7 @@ add_library(reminecraftpe-core STATIC
     client/gui/screens/DeathScreen.cpp
     client/gui/screens/ChatScreen.cpp
     client/gui/screens/CraftingScreen.cpp
+    client/gui/screens/FurnaceScreen.cpp
     client/gui/screens/RenameMPLevelScreen.cpp
     client/gui/screens/ProgressScreen.cpp
     client/gui/screens/JoinGameScreen.cpp
@@ -286,6 +287,7 @@ add_library(reminecraftpe-core STATIC
     world/item/AuxTileItem.cpp
     world/item/ClothItem.cpp
     world/item/SlabItem.cpp
+    world/item/FoodItem.cpp
     world/particle/RedDustParticle.cpp
     world/particle/TerrainParticle.cpp
     world/particle/BubbleParticle.cpp
@@ -315,15 +317,19 @@ add_library(reminecraftpe-core STATIC
     world/tile/TopSnowTile.cpp
     world/tile/ReedTile.cpp
     world/tile/Bush.cpp
+    world/tile/CropTile.cpp
     world/tile/RedStoneOreTile.cpp
     world/tile/DirtTile.cpp
     world/tile/LiquidTileStatic.cpp
     world/tile/BookshelfTile.cpp
     world/tile/TntTile.cpp
     world/tile/OreTile.cpp
+    world/tile/CoalOreTile.cpp
+    world/tile/DiamondOreTile.cpp
     world/tile/StairTile.cpp
     world/tile/SandStoneTile.cpp
     world/tile/FireTile.cpp
+    world/tile/FurnaceTile.cpp
     world/tile/StoneSlabTile.cpp
     world/tile/LiquidTile.cpp
     world/tile/GravelTile.cpp

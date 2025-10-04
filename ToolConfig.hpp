@@ -42,4 +42,8 @@ namespace ToolConfig {
     bool isAxe(int itemId);
     bool isSword(int itemId);
     bool isHoe(int itemId);
+    
+    // Tool durability functions
+    bool isTool(int itemId);
+    bool shouldTakeDurability(int itemId, int blockId);
 }

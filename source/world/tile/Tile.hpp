@@ -164,6 +164,7 @@ public: // static variables
 		* snow,
 		* clay,
 		* farmland,
+		* wheat,
 		* stoneSlab,
 		* stoneSlabHalf,
 		* cloth,

@@ -28,6 +28,7 @@ public:
 	void initPlayer(Player*) override;
 	bool canHurtPlayer() override;
 	float getDestroyModifier() const override { return 1.0; }
+	bool useItemOn(Player* player, Level* level, ItemInstance* instance, const TilePos& pos, Facing::Name face) override;
 	
 private:
 	bool canHarvestBlock(Player* player, TileID tileId) const;

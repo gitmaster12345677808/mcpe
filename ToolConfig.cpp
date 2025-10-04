@@ -184,12 +184,15 @@ namespace ToolConfig {
     float getToolEfficiency(int toolItemId, int blockId) {
         // Handle hand (no tool)
         if (toolItemId == -1) {
-            // Stone blocks are very slow with hand
-            if (blockId == TILE_STONE || blockId == TILE_STONEBRICK || 
+            // Diamond ore and blocks cannot be mined by hand at all
+            if (blockId == TILE_ORE_EMERALD || blockId == TILE_BLOCK_EMERALD) {
+                return 0.0f; // Cannot mine at all
+            }
+            // Other stone blocks are very slow with hand
+            else if (blockId == TILE_STONE || blockId == TILE_STONEBRICK || 
                 blockId == TILE_ORE_COAL || blockId == TILE_ORE_IRON || 
-                blockId == TILE_ORE_GOLD || blockId == TILE_ORE_EMERALD ||
-                blockId == TILE_BLOCK_IRON || blockId == TILE_BLOCK_GOLD || 
-                blockId == TILE_BLOCK_EMERALD || blockId == TILE_OBSIDIAN ||
+                blockId == TILE_ORE_GOLD || blockId == TILE_BLOCK_IRON || 
+                blockId == TILE_BLOCK_GOLD || blockId == TILE_OBSIDIAN ||
                 blockId == TILE_BRICKS || blockId == TILE_FURNACE || blockId == TILE_FURNACE_LIT) {
                 return PICKAXE_EFFICIENCY.hand;
             }
@@ -206,12 +209,19 @@ namespace ToolConfig {
 
         // Check if it's the correct tool for the block
         if (isCorrectTool(toolItemId, blockId)) {
-            // Stone-type blocks
-            if (blockId == TILE_STONE || blockId == TILE_STONEBRICK || 
+            // Diamond ore/block requires iron or diamond pickaxe
+            if (blockId == TILE_ORE_EMERALD || blockId == TILE_BLOCK_EMERALD) {
+                if (toolItemId == ITEM_PICKAXE_IRON || toolItemId == ITEM_PICKAXE_EMERALD) {
+                    return getMaterialEfficiency(toolItemId, PICKAXE_EFFICIENCY);
+                } else {
+                    return 0.0f; // Other pickaxes cannot mine diamond ore
+                }
+            }
+            // Other stone-type blocks
+            else if (blockId == TILE_STONE || blockId == TILE_STONEBRICK || 
                 blockId == TILE_ORE_COAL || blockId == TILE_ORE_IRON || 
-                blockId == TILE_ORE_GOLD || blockId == TILE_ORE_EMERALD ||
-                blockId == TILE_BLOCK_IRON || blockId == TILE_BLOCK_GOLD || 
-                blockId == TILE_BLOCK_EMERALD || blockId == TILE_OBSIDIAN ||
+                blockId == TILE_ORE_GOLD || blockId == TILE_BLOCK_IRON || 
+                blockId == TILE_BLOCK_GOLD || blockId == TILE_OBSIDIAN ||
                 blockId == TILE_BRICKS || blockId == TILE_FURNACE || blockId == TILE_FURNACE_LIT) {
                 return getMaterialEfficiency(toolItemId, PICKAXE_EFFICIENCY);
             }
@@ -229,6 +239,15 @@ namespace ToolConfig {
         
         // Wrong tool penalty
         return getMaterialEfficiency(toolItemId, WRONG_TOOL_EFFICIENCY);
+    }
+
+    bool isTool(int itemId) {
+        return isPickaxe(itemId) || isShovel(itemId) || isAxe(itemId) || isSword(itemId) || isHoe(itemId);
+    }
+
+    bool shouldTakeDurability(int itemId, int blockId) {
+        // All tools should take durability when used
+        return isTool(itemId);
     }
 
 } // namespace ToolConfig

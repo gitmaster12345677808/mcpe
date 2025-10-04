@@ -454,4 +454,13 @@ void CraftingManager::initializeRecipes() {
     recipe.resultItemId = ITEM_DOOR_WOOD;
     recipe.resultCount = 1;
     addRecipe(recipe);
+    
+    // Fertilizer recipe (3 logs + 3 dirt)
+    recipe.pattern = {
+        {TILE_TREE_TRUNK, TILE_DIRT, TILE_TREE_TRUNK},
+        {TILE_DIRT, TILE_TREE_TRUNK, TILE_DIRT}
+    };
+    recipe.resultItemId = ITEM_FERTILIZER;
+    recipe.resultCount = 6; // Makes 6 fertilizer
+    addRecipe(recipe);
 }

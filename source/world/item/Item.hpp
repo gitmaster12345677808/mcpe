@@ -173,6 +173,7 @@ public: // Static declarations
 		*bucket_empty,
 		*bucket_water,
 		*bucket_lava,
+		*fertilizer,
 		*minecart,
 		*saddle,
 		*door_iron,

@@ -75,6 +75,7 @@ void Inventory::prepareCreativeInventory()
 	addCreativeItem(Tile::cloth->m_ID, 15);
 	addCreativeItem(Tile::mossStone->m_ID);
 	addCreativeItem(Tile::bookshelf->m_ID);
+	addCreativeItem(TILE_FURNACE);  // Add furnace to creative inventory
 	addCreativeItem(Tile::lapisBlock->m_ID);
 	addCreativeItem(Tile::sponge->m_ID);
 	addCreativeItem(Tile::sapling->m_ID);
@@ -92,6 +93,7 @@ void Inventory::prepareCreativeInventory()
 	addCreativeItem(Item::door_wood->m_itemID);
 	addCreativeItem(Item::door_iron->m_itemID);
 	addCreativeItem(Item::rocket->m_itemID);
+	addCreativeItem(Item::fertilizer->m_itemID);
 
 	// more stuff
 	addCreativeItem(Tile::cloth->m_ID, 0);

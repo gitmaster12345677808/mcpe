@@ -13,12 +13,14 @@
 #include "TileItem.hpp"
 #include "TilePlanterItem.hpp"
 #include "RocketItem.hpp"
+#include "FoodItem.hpp"
 
 #define ITEM(x) ((x) - 256)
 
 #define NEW_ITEM(id) (new Item(ITEM(id)))
 #define NEW_X_ITEM(Type, id, ...) (new Type(ITEM(id), __VA_ARGS__))
 #define NEW_X_ITEMN(Type, id) (new Type(ITEM(id)))
+#define NEW_FOOD_ITEM(id, healAmount) (new FoodItem(ITEM(id), healAmount))
 
 static bool g_bInittedItems = false;
 
@@ -383,7 +385,7 @@ void Item::initItems()
 		->setIcon(9, 1)
 		->setDescriptionId("wheat");
 
-	Item::bread = NEW_ITEM(ITEM_BREAD)
+	Item::bread = NEW_FOOD_ITEM(ITEM_BREAD, 5)
 		->setIcon(9, 2)
 		->setDescriptionId("bread");
 
@@ -391,19 +393,19 @@ void Item::initItems()
 		->setIcon(6, 0)
 		->setDescriptionId("flint");
 
-	Item::porkChop_raw = NEW_ITEM(ITEM_PORKCHOP_RAW)
+	Item::porkChop_raw = NEW_FOOD_ITEM(ITEM_PORKCHOP_RAW, 3)
 		->setIcon(7, 5)
 		->setDescriptionId("porkchopRaw");
 
-	Item::porkChop_cooked = NEW_ITEM(ITEM_PORKCHOP_COOKED)
+	Item::porkChop_cooked = NEW_FOOD_ITEM(ITEM_PORKCHOP_COOKED, 8)
 		->setIcon(8, 5)
 		->setDescriptionId("porkchopCooked");
 
-	Item::apple = NEW_ITEM(ITEM_APPLE)
+	Item::apple = NEW_FOOD_ITEM(ITEM_APPLE, 4)
 		->setIcon(10, 0)
-		->setDescriptionId("appleGold");
+		->setDescriptionId("apple");
 
-	Item::apple_gold = NEW_ITEM(ITEM_APPLE_GOLD)
+	Item::apple_gold = NEW_FOOD_ITEM(ITEM_APPLE_GOLD, 10)
 		->setIcon(11, 0)
 		->setDescriptionId("appleGold");
 
@@ -424,6 +426,11 @@ void Item::initItems()
 		->setIcon(12, 4)
 		->setDescriptionId("bucketLava");
 		//>setCraftingRemainingItem(emptyBucket);
+
+	Item::fertilizer = NEW_ITEM(ITEM_FERTILIZER)
+		->setIcon(15, 3)
+		->setDescriptionId("fertilizer")
+		->setMaxStackSize(64);
 
 	Item::minecart = NEW_ITEM(ITEM_MINECART)
 		->setIcon(7, 8)
@@ -764,6 +771,7 @@ Item
 	*Item::bucket_empty,
 	*Item::bucket_water,
 	*Item::bucket_lava,
+	*Item::fertilizer,
 	*Item::minecart,
 	*Item::saddle,
 	*Item::door_iron,

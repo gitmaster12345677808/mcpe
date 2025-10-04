@@ -25,7 +25,7 @@ void LevelData::_init(int32_t seed, int storageVersion)
 	m_gameType = GAME_TYPE_CREATIVE;
 	m_storageVersion = storageVersion;
 	m_generatorVersion = 0; // pre-0.2.1 versions used storageVersion instead
-	m_bSpawnMobs = false;
+	m_bSpawnMobs = true; // Enable mob spawning for gameplay
 	m_nPlayers = -1;
 }
 

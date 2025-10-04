@@ -25,6 +25,7 @@
 #include "IceTile.hpp"
 #include "ClayTile.hpp"
 #include "FarmTile.hpp"
+#include "CropTile.hpp"
 #include "StoneSlabTile.hpp"
 #include "ClothTile.hpp"
 #include "Bush.hpp"
@@ -34,6 +35,8 @@
 #include "TransparentTile.hpp"
 #include "LeafTile.hpp"
 #include "OreTile.hpp"
+#include "CoalOreTile.hpp"
+#include "DiamondOreTile.hpp"
 #include "RedStoneOreTile.hpp"
 #include "ReedTile.hpp"
 #include "InvisibleTile.hpp"
@@ -53,7 +56,7 @@
 #include "RocketLauncherTile.hpp"
 //#include "RedStoneDustTile.hpp"
 //#include "CraftingTableTile.hpp"
-//#include "FurnaceTile.hpp"
+#include "FurnaceTile.hpp"
 #include "TallGrass.hpp"
 #include "DeadBush.hpp"
 //#include "Fern.hpp"
@@ -366,7 +369,7 @@ void Tile::initTiles()
 		->setSoundType(Tile::SOUND_STONE)
 		->setDescriptionId("oreIron");
 
-	Tile::coalOre = (new OreTile(TILE_ORE_COAL, TEXTURE_ORE_COAL))
+	Tile::coalOre = (new CoalOreTile(TILE_ORE_COAL, TEXTURE_ORE_COAL))
 		->init()
 		->setDestroyTime(3.0f)
 		->setExplodeable(5.0f)
@@ -511,11 +514,26 @@ void Tile::initTiles()
 		->setSoundType(Tile::SOUND_WOOD)
 		->setDescriptionId("torch");
 
+	// Add furnace tiles
+	// @TODO: Add furnace functionality when ready
+	tiles[TILE_FURNACE] = (new FurnaceTile(TILE_FURNACE, false))
+		->init()
+		->setDestroyTime(3.5f)
+		->setSoundType(Tile::SOUND_STONE)
+		->setDescriptionId("furnace");
+
+	tiles[TILE_FURNACE_LIT] = (new FurnaceTile(TILE_FURNACE_LIT, true))
+		->init()
+		->setDestroyTime(3.5f)
+		->setLightEmission(0.625f)
+		->setSoundType(Tile::SOUND_STONE)
+		->setDescriptionId("furnace");
+
 	Tile::stairs_wood = (new StairTile(TILE_STAIRS_WOOD, Tile::wood))
 		->init()
 		->setDescriptionId("stairsWood");
 
-	Tile::emeraldOre = (new OreTile(TILE_ORE_EMERALD, TEXTURE_ORE_EMERALD))
+	Tile::emeraldOre = (new DiamondOreTile(TILE_ORE_EMERALD, TEXTURE_ORE_EMERALD))
 		->init()
 		->setDestroyTime(3.0f)
 		->setExplodeable(5.0f)
@@ -534,6 +552,12 @@ void Tile::initTiles()
 		->setDestroyTime(0.6f)
 		->setSoundType(Tile::SOUND_GRAVEL)
 		->setDescriptionId("farmland");
+
+	Tile::wheat = (new CropTile(TILE_WHEAT, TEXTURE_WHEAT_0))
+		->init()
+		->setDestroyTime(0.0f)
+		->setSoundType(Tile::SOUND_GRASS)
+		->setDescriptionId("wheat");
 
 	Tile::door_wood = (new DoorTile(TILE_DOOR_WOOD, Material::wood))
 		->init()
@@ -1170,6 +1194,7 @@ Tile
 	*Tile::snow,
 	*Tile::clay,
 	*Tile::farmland,
+	*Tile::wheat,
 	*Tile::stoneSlab,
 	*Tile::stoneSlabHalf,
 	*Tile::cloth,
